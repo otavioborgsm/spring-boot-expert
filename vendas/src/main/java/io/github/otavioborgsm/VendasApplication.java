@@ -1,6 +1,6 @@
 package io.github.otavioborgsm;
 import io.github.otavioborgsm.domain.entity.Cliente;
-import io.github.otavioborgsm.domain.repositorio.Clientes;
+import io.github.otavioborgsm.domain.repository.Clientes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
