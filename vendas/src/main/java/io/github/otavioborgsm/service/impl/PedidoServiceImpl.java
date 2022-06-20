@@ -4,6 +4,7 @@ import io.github.otavioborgsm.domain.entity.Cliente;
 import io.github.otavioborgsm.domain.entity.ItemPedido;
 import io.github.otavioborgsm.domain.entity.Pedido;
 import io.github.otavioborgsm.domain.entity.Produto;
+import io.github.otavioborgsm.domain.enums.StatusPedido;
 import io.github.otavioborgsm.domain.repository.Clientes;
 import io.github.otavioborgsm.domain.repository.ItensPedido;
 import io.github.otavioborgsm.domain.repository.Pedidos;
@@ -42,6 +43,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
         repository.save(pedido);
