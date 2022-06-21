@@ -2,6 +2,8 @@ package io.github.otavioborgsm.rest.controller;
 
 import io.github.otavioborgsm.domain.entity.ItemPedido;
 import io.github.otavioborgsm.domain.entity.Pedido;
+import io.github.otavioborgsm.domain.enums.StatusPedido;
+import io.github.otavioborgsm.rest.dto.AtualizacaoStatusPedidoDTO;
 import io.github.otavioborgsm.rest.dto.InformacaoItemPedidoDTO;
 import io.github.otavioborgsm.rest.dto.InformacoesPedidoDTO;
 import io.github.otavioborgsm.rest.dto.PedidoDTO;
@@ -40,6 +42,13 @@ public class PedidoController {
                 .map(p -> converter(p))
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dto){
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private InformacoesPedidoDTO converter (Pedido pedido){
