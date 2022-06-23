@@ -1,4 +1,4 @@
-package io.github.otavioborgsm;
+package io.github.otavioborgsm.security.jwt;
 
 import io.github.otavioborgsm.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
