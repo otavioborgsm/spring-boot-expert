@@ -2,8 +2,14 @@ package io.github.otavioborgsm.localizacao.service;
 
 import io.github.otavioborgsm.localizacao.domain.entity.Cidade;
 import io.github.otavioborgsm.localizacao.domain.repository.CidadeRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CidadeService {
@@ -19,8 +25,13 @@ public class CidadeService {
                 .forEach(System.out::println);
     }
 
-    public void listaCidadePorNome(String nome){
-        repository.findByNomeLike(nome)
+    public void listaCidadePorNomeOrdenado(String nome, Sort sort){
+        repository.findByNomeLike( nome, sort )
+                .forEach(System.out::println);
+    }
+
+    public void listaCidadePorNomePaginado(String nome, Pageable pageable){
+        repository.findByNomeLike( nome, pageable )
                 .forEach(System.out::println);
     }
 
@@ -38,5 +49,11 @@ public class CidadeService {
     public void listarCidades(){
         repository.findAll()
                 .forEach(System.out::println);
+    }
+
+    public List<Cidade> filtroDinamico( Cidade cidade ){
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase();
+        Example<Cidade> example = Example.of(cidade, matcher);
+        return repository.findAll(example);
     }
 }
