@@ -2,12 +2,15 @@ package io.github.otavioborgsm.localizacao.service;
 
 import io.github.otavioborgsm.localizacao.domain.entity.Cidade;
 import io.github.otavioborgsm.localizacao.domain.repository.CidadeRepository;
+import static io.github.otavioborgsm.localizacao.domain.repository.specs.CidadeSpecs.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -55,5 +58,30 @@ public class CidadeService {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase();
         Example<Cidade> example = Example.of(cidade, matcher);
         return repository.findAll(example);
+    }
+
+    public void listarCidadesByNomeSpec(String nome, Long habitantes){
+        repository
+                .findAll(nomeEqual(nome).and(habitantesGreaterThan(habitantes)))
+                .forEach(System.out::println);
+    }
+
+    public void listarCidadesSpecsFiltroDinamico(Cidade filtro){
+        Specification<Cidade> specs = Specification.where((root, query, cb) -> cb.conjunction());
+
+        if (filtro.getId() != null){
+            specs = specs.and( idEqual(filtro.getId()) );
+        }
+
+        if (StringUtils.hasText(filtro.getNome())){
+            specs = specs.and(nomeLike(filtro.getNome()));
+        }
+
+        if (filtro.getHabitantes() != null){
+            specs = specs.and(habitantesGreaterThan(filtro.getHabitantes()));
+        }
+
+        repository.findAll(specs).forEach(System.out::println);
+
     }
 }
