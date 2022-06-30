@@ -38,6 +38,13 @@ public class CidadeService {
                 .forEach(System.out::println);
     }
 
+    public void listaCidadePorNomeSQL(String nome){
+        repository
+                .findByNomeSqlNativo(nome)
+                .stream().map(cidadeProjection -> new Cidade( cidadeProjection.getId(), cidadeProjection.getNome(),null))
+                .forEach(System.out::println);
+    }
+
     public void listarCidadesPorHabitantes(Long habitantes){
         repository.findByHabitantes(habitantes)
                 .forEach(System.out::println);
